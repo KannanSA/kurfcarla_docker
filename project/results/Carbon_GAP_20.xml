@@ -1,0 +1,89 @@
+<GAP_2020_4_27_60_2_50_5_436>
+<Potential label="GAP_2020_4_27_60_2_50_5_436" init_args="Sum init_args_pot1={IP Glue} init_args_pot2={IP GAP label=GAP_2020_4_27_60_2_50_5_436}"/>
+<quip>
+  <Glue_params n_types="1">
+  <per_type_data atomic_num="6" type="1">
+    <!-- C -->
+    <density num_points="2" density_y1="-0.4144" density_yn="0.0">
+      <point a="0.821917808219178" rho="0.00001"/>
+      <point a="1.027397260273973" rho="0.00002"/>
+    </density>
+    <potential_density num_points="2">
+      <point rho="0.00001" E="0.0"/>
+      <point rho="0.00002" E="0.0"/>
+    </potential_density>
+  </per_type_data>
+  <per_pair_data type1="1" type2="1">
+    <potential_pair num_points="18" y1="0.0" yn="0.0">
+      <point r="3.0"  E="0.0"/>
+      <point r="4.0"  E="-0.00490249"/>
+      <point r="4.1"  E="-0.0042274"/>
+      <point r="4.2"  E="-0.00365831"/>
+      <point r="4.3"  E="-0.00317662"/>
+      <point r="4.4"  E="-0.00276733"/>
+      <point r="4.5"  E="-0.00241825"/>
+      <point r="5.0"  E="-0.00128516"/>
+      <point r="5.5"  E="-0.000725438"/>
+      <point r="6.0"  E="-0.000430397"/>
+      <point r="6.5"  E="-0.000266254"/>
+      <point r="7.0"  E="-0.000170682"/>
+      <point r="7.5"  E="-0.000112826"/>
+      <point r="8.0"  E="-7.66013e-5"/>
+      <point r="8.5"  E="-5.3243e-5"/>
+      <point r="9.0"  E="-3.77852e-5"/>
+      <point r="9.5"  E="-2.73171e-5"/>
+      <point r="10.0" E="0.0"/>
+    </potential_pair>
+ </per_pair_data>
+</Glue_params>
+</quip>
+<GAP_params label="GAP_2020_4_27_60_2_50_5_436" gap_version="1575905725">
+  <GAP_data do_core="T">
+    <e0 Z="1" value=".00000000000000000E+000"/>
+    <e0 Z="2" value=".00000000000000000E+000"/>
+    <e0 Z="3" value=".00000000000000000E+000"/>
+    <e0 Z="4" value=".00000000000000000E+000"/>
+    <e0 Z="5" value=".00000000000000000E+000"/>
+    <e0 Z="6" value=".94664775000000001"/>
+    <e0 Z="7" value=".00000000000000000E+000"/>
+    <e0 Z="8" value=".00000000000000000E+000"/>
+    <e0 Z="9" value=".00000000000000000E+000"/>
+    <e0 Z="10" value=".00000000000000000E+000"/>
+  
+  </GAP_data>
+  <gpSparse label="GAP_2020_4_27_60_2_50_5_436" n_coordinate="3">
+    <gpCoordinates label="GAP_2020_4_27_60_2_50_5_4361" dimensions="1" signal_variance="2.0000000000000000" signal_mean=".00000000000000000E+000" sparsified="T" n_permutations="1" covariance_type="1" n_sparseX="15" sparseX_filename="Carbon_GAP_20.xml.sparseX.GAP_2020_4_27_60_2_50_5_4361" sparseX_md5sum="adc0cf42827c2c06c0ba56c77a9470ee">
+      <theta>  0.10000000000000000E+001 </theta>
+      <descriptor>distance_2b n_sparse=15 theta_uniform=1.0 sparse_method=uniform covariance_type=ard_se cutoff=4.5 delta=2.0</descriptor>
+      <permutation i="1">1  </permutation>
+      <sparseX i="1" alpha="-15743.957398124077" sparseCutoff=".31856859409093630"/>
+      <sparseX i="2" alpha="-1416998.1092851718" sparseCutoff="1.0000000000000000"/>
+      <sparseX i="3" alpha="780154.97911388264" sparseCutoff="1.0000000000000000"/>
+      <sparseX i="4" alpha="189910.16367492385" sparseCutoff="1.0000000000000000"/>
+      <sparseX i="5" alpha="455607.12595572940" sparseCutoff="1.0000000000000000"/>
+      <sparseX i="6" alpha="-1216739.0020221898" sparseCutoff="1.0000000000000000"/>
+      <sparseX i="7" alpha="-939993.49605624133" sparseCutoff="1.0000000000000000"/>
+      <sparseX i="8" alpha="1544365.5595044610" sparseCutoff="1.0000000000000000"/>
+      <sparseX i="9" alpha="-255568.66096629357" sparseCutoff=".91608429308653316E-002"/>
+      <sparseX i="10" alpha="-1829512.9900201941" sparseCutoff="1.0000000000000000"/>
+    </gpCoordinates>
+    <gpCoordinates label="GAP_2020_4_27_60_2_50_5_4362" dimensions="3" signal_variance=".50000000000000003E-001" signal_mean=".00000000000000000E+000" sparsified="T" n_permutations="1" covariance_type="1" n_sparseX="200" sparseX_filename="Carbon_GAP_20.xml.sparseX.GAP_2020_4_27_60_2_50_5_4362" sparseX_md5sum="3235a3f6b83620821d3f732c742803fd">
+      <theta>  0.10000000000000000E+001  0.10000000000000000E+001  0.10000000000000000E+001 </theta>
+      <descriptor>angle_3b n_sparse=200 theta_uniform=1.0 sparse_method=uniform covariance_type=ard_se cutoff=2.5 delta=0.05</descriptor>
+      <permutation i="1">1 2 3  </permutation>
+      <sparseX i="1" alpha="-228962.41398185640" sparseCutoff=".17843748268240483E-002"/>
+      <sparseX i="2" alpha="47707.859397253240" sparseCutoff=".32962980008201373E-001"/>
+      <sparseX i="3" alpha="200897.00758976911" sparseCutoff=".20346156849580616"/>
+      <sparseX i="4" alpha="8894.6529850307325" sparseCutoff=".20346156849580616"/>
+      <sparseX i="5" alpha="1098956.3175616255" sparseCutoff=".87700829204058195E-002"/>
+      <sparseX i="6" alpha="-143944.99158279516" sparseCutoff=".87700829204058195E-002"/>
+      <sparseX i="7" alpha="432227.84966918273" sparseCutoff=".16201084190934478"/>
+      <sparseX i="8" alpha="-827291.47998801572" sparseCutoff=".10489647957751622E-002"/>
+      <sparseX i="9" alpha="169364.07363823228" sparseCutoff=".11960716965793788"/>
+      <sparseX i="10" alpha="485984.69273839175" sparseCutoff="1.0000000000000000"/>
+    </gpCoordinates>
+  </gpSparse>
+  <command_line><![CDATA[ at_file=General_Carbon_V10_2_4000_All_GAP_17_Unique_LD_Iteration_1.xyz gap={distance_2b n_sparse=15 theta_uniform=1.0 sparse_method=uniform covariance_type=ard_se cutoff=4.5 delta=2.0:angle_3b n_sparse=200 theta_uniform=1.0 sparse_method=uniform covariance_type=ard_se cutoff=2.5 delta=0.05:soap n_max=12 l_max=4 atom_sigma=0.5 zeta=4.0 cutoff=4.5 cutoff_transition_width=1.0 central_weight=1.0 n_sparse=9000 delta=0.2 covariance_type=dot_product sparse_method=cur_points radial_decay=-0.5} default_sigma={0.001 0.01 0.05 0.0} energy_parameter_name=energy force_parameter_name=force virial_parameter_name=virial do_copy_at_file=F sparse_jitter=1.0e-8 gp_file=Carbon_GAP_V10_2_LDIter1_grr6_2b_3b_soap_n12l4_sp9k_delta-2-0.05-0.2.xml core_ip_args={IP Glue} core_param_file=r6_innercut.xml 
+config_type_sigma={Liquid:0.050:0.5:0.5:0.0:Liquid_Interface:0.050:0.5:0.5:0.0:Amorphous_Bulk:0.005:0.2:0.2:0.0:Amorphous_Surfaces:0.005:0.2:0.2:0.0:Surfaces:0.002:0.1:0.2:0.0:Dimer:0.002:0.1:0.2:0.0:Fullerenes:0.002:0.1:0.2:0.0:Defects:0.001:0.01:0.05:0.0:Crystalline_Bulk:0.001:0.01:0.05:0.0:Nanotubes:0.001:0.01:0.05:0.0:Graphite:0.001:0.01:0.05:0.0:Diamond:0.001:0.01:0.05:0.0:Graphene:0.001:0.01:0.05:0.0:Graphite_Layer_Sep:0.001:0.01:0.05:0.0:Single_Atom:0.0001:0.001:0.05:0.0}]]></command_line>
+</GAP_params>
+</GAP_2020_4_27_60_2_50_5_436>
