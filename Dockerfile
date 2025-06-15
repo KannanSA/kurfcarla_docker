@@ -1,33 +1,27 @@
-# Start FROM the official pre-built image from the QUIP developers.
-# This image contains LAMMPS with the ML-QUIP and GAP packages already enabled.
+# Use the official image with LAMMPS and QUIP pre-installed.
+# This image already contains Python, ASE, and a working LAMMPS.
 FROM libatomsquip/quip:public
 
-# Create a standard, non-root user to run the application.
-# This is a security best practice and solves any "run-as-root" issues with mpirun.
+# Create a non-root user for security best practices.
 RUN useradd --create-home --shell /bin/bash appuser
 
-# --- THIS IS THE KEY FIX ---
-# Create a wrapper script that contains the exact, correct command to launch LAMMPS.
-# The python script will call this wrapper, which is more robust than calling mpirun directly.
-RUN echo '#!/bin/bash' > /usr/local/bin/run_lammps.sh && \
-    echo 'exec mpirun -np 1 lmp_mpi "$@"' >> /usr/local/bin/run_lammps.sh && \
-    chmod +x /usr/local/bin/run_lammps.sh
-
-# Set the working directory
+# Set the working directory inside the container.
 WORKDIR /app
 
-# Copy requirements file and install python packages
+# Copy only the requirements file first to leverage Docker's build cache.
 COPY requirements.txt .
+
+# Install the pandas dependency into the existing python environment.
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of your project files
+# Copy all your project files into the container.
 COPY . .
 
-# Change ownership of the app directory to the new user
+# Give the new user ownership of the files.
 RUN chown -R appuser:appuser /app
 
-# Switch to the non-root user
+# Switch to the non-root user.
 USER appuser
 
-# Specify the command to run when the container starts.
+# Set the default command to run your python script.
 CMD ["python", "lammps_runner.py"]

@@ -1,0 +1,3 @@
+clear
+variable dump_file string "/app/project/out/lammps_tmp/trj_lammps000001jp4yy5o8.bin"
+variable data_file string "/app/project/out/lammps_tmp/data_lammps000001jmnisk01"
