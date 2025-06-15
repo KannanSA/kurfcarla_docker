@@ -2,25 +2,32 @@
 # This image contains LAMMPS with the ML-QUIP and GAP packages already enabled.
 FROM libatomsquip/quip:public
 
-# Set the working directory inside the container
+# Create a standard, non-root user to run the application.
+# This is a security best practice and solves any "run-as-root" issues with mpirun.
+RUN useradd --create-home --shell /bin/bash appuser
+
+# --- THIS IS THE KEY FIX ---
+# Create a wrapper script that contains the exact, correct command to launch LAMMPS.
+# The python script will call this wrapper, which is more robust than calling mpirun directly.
+RUN echo '#!/bin/bash' > /usr/local/bin/run_lammps.sh && \
+    echo 'exec mpirun -np 1 lmp_mpi "$@"' >> /usr/local/bin/run_lammps.sh && \
+    chmod +x /usr/local/bin/run_lammps.sh
+
+# Set the working directory
 WORKDIR /app
 
-# The base image has python, but we need to install pandas and ase.
-# First, copy the requirements file.
+# Copy requirements file and install python packages
 COPY requirements.txt .
-
-# Install the python packages using the pip included in the image
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all your project files (the python script and project data folder)
+# Copy the rest of your project files
 COPY . .
 
-# Set the user to root, which is the default for this container
-USER root
+# Change ownership of the app directory to the new user
+RUN chown -R appuser:appuser /app
 
-# FIX: Create a symbolic link from 'lmp_mpi' (the actual command) to 'lmp'.
-# This ensures that scripts calling 'lmp' will work correctly in this container.
-RUN ln -s /usr/local/bin/lmp_mpi /usr/local/bin/lmp
+# Switch to the non-root user
+USER appuser
 
 # Specify the command to run when the container starts.
 CMD ["python", "lammps_runner.py"]

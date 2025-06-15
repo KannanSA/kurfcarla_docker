@@ -22,22 +22,27 @@ def run_binding_energy(xyz_file, out_dir, lammps_executable):
     base = os.path.splitext(os.path.basename(xyz_file))[0]
     os.makedirs(out_dir, exist_ok=True)
     
-    potential_dir = os.path.dirname(GAP_XML)
-    potential_xml_basename = os.path.basename(GAP_XML)
+    # --- KEY FIX ---
+    # Get the absolute path of the potential file *inside the container*.
+    # The working directory of the container is '/app', so this will resolve to '/app/project/results/Carbon_GAP_20.xml'.
+    # This ensures LAMMPS can always find the file, regardless of the temporary directory it runs in.
+    abs_gap_xml_path = os.path.abspath(GAP_XML)
 
-    potential_files = glob.glob(os.path.join(potential_dir, f"{potential_xml_basename}*"))
-    if not potential_files:
-        raise FileNotFoundError(f"No potential files found matching {GAP_XML}* in {potential_dir}")
+    if not os.path.exists(abs_gap_xml_path):
+        raise FileNotFoundError(f"Potential file not found at absolute path: {abs_gap_xml_path}")
 
     params = {
         'pair_style': 'quip',
-        'pair_coeff': [f'* * {potential_xml_basename} "IP GAP" 1'],
+        # Provide the absolute path to the potential file in the pair_coeff command.
+        'pair_coeff': [f'* * {abs_gap_xml_path} "IP GAP" 1'],
         'mass': ['1 12.011']
     }
 
     from ase.calculators.lammpsrun import LAMMPS
     try:
-        calc = LAMMPS(**params, files=potential_files, command=lammps_executable)
+        print(f"--- Using LAMMPS command: {lammps_executable} ---")
+        # We no longer need the 'files' argument, as we provide the full path.
+        calc = LAMMPS(**params, command=lammps_executable)
         atoms.calc = calc
         E_cluster = atoms.get_potential_energy()
         BE_per_atom = (n_atoms * E_REF - E_cluster) / n_atoms
@@ -45,7 +50,6 @@ def run_binding_energy(xyz_file, out_dir, lammps_executable):
         msg = str(e)
         if "FileNotFoundError" in msg or "does not exist" in msg:
              print(f"ERROR: A required file was not found. This might be a potential file or another input.")
-             print(f"Check that all potential files (XML and sparseX) are in: {potential_dir}")
         elif (
             "pair style 'quip'" in msg
             or "ML-QUIP package" in msg
@@ -100,16 +104,13 @@ if __name__ == '__main__':
     parser.add_argument('--out', type=str, default='project/out', help='Output directory for data and logs')
     parser.add_argument('--results', type=str, default='project/out/results.csv', help='CSV path to save aggregated results')
     
-    # --- THIS IS THE FIX ---
-    # Use the command name directly, as it is on the PATH in the container.
-    parser.add_argument('--lammps', type=str, default='lmp_mpi', help='LAMMPS command')
+    # Call the wrapper script we created in the Dockerfile.
+    parser.add_argument('--lammps', type=str, default='run_lammps.sh', help='LAMMPS command')
     
     args = parser.parse_args()
 
-    # Check if we are running in single-file mode or batch mode
     if args.xyz and not os.path.isdir(args.dir):
         print(f"Running single file: {args.xyz}")
-        # Make sure the single file exists
         if not os.path.exists(args.xyz):
              raise FileNotFoundError(f"Input xyz file not found at {args.xyz}")
         res = run_binding_energy(args.xyz, args.out, args.lammps)
@@ -118,7 +119,6 @@ if __name__ == '__main__':
         print(f"Result for {args.xyz}:\n", df)
     else:
         print(f"Running batch mode on directory: {args.dir}")
-        # Make sure the directory exists
         if not os.path.isdir(args.dir):
              raise NotADirectoryError(f"Input directory not found at {args.dir}")
         df = batch_run(args.dir, args.out, args.results, args.lammps)
