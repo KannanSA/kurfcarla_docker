@@ -1,0 +1,130 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>🔬 Carbon Cluster Embedding Projector</title>
+        <style>
+            body { 
+                font-family: 'Segoe UI', Arial, sans-serif; 
+                max-width: 1200px; 
+                margin: 0 auto; 
+                padding: 20px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+            }
+            .container { 
+                background: rgba(255,255,255,0.1); 
+                padding: 30px; 
+                border-radius: 15px;
+                backdrop-filter: blur(10px);
+            }
+            h1 { color: #FFD700; text-align: center; font-size: 2.5em; }
+            h2 { color: #87CEEB; border-bottom: 2px solid #87CEEB; padding-bottom: 10px; }
+            .embedding-grid { 
+                display: grid; 
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+                gap: 20px; 
+                margin: 20px 0; 
+            }
+            .embedding-card { 
+                background: rgba(255,255,255,0.2); 
+                padding: 20px; 
+                border-radius: 10px; 
+                border: 1px solid rgba(255,255,255,0.3);
+            }
+            .btn { 
+                display: inline-block; 
+                padding: 12px 24px; 
+                background: #4CAF50; 
+                color: white; 
+                text-decoration: none; 
+                border-radius: 5px; 
+                margin: 5px;
+                transition: background 0.3s;
+            }
+            .btn:hover { background: #45a049; }
+            .btn-primary { background: #007bff; }
+            .btn-primary:hover { background: #0056b3; }
+            .stats { 
+                background: rgba(0,0,0,0.3); 
+                padding: 15px; 
+                border-radius: 10px; 
+                margin: 20px 0; 
+            }
+            code { 
+                background: rgba(0,0,0,0.4); 
+                padding: 2px 6px; 
+                border-radius: 3px; 
+                font-family: 'Courier New', monospace;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🔬 Carbon Cluster Embedding Projector</h1>
+            
+            <div class="stats">
+                <h2>📊 Dataset Statistics</h2>
+                <p><strong>Total Clusters:</strong> 5,232</p>
+                <p><strong>Mean Atoms:</strong> 240.0</p>
+                <p><strong>Mean Binding Energy:</strong> -7.332 eV</p>
+                <p><strong>BE Range:</strong> -7.340 - -7.305 eV</p>
+            </div>
+            
+            <h2>🚀 Available Embeddings</h2>
+            <div class="embedding-grid">
+                <div class="embedding-card">
+                    <h3>🎯 Raw Features</h3>
+                    <p>Original normalized features including atom count, binding energy, and structural properties.</p>
+                    <a href="https://projector.tensorflow.org/" class="btn btn-primary" target="_blank">Launch Projector</a>
+                </div>
+                
+                <div class="embedding-card">
+                    <h3>📊 PCA Embedding</h3>
+                    <p>Principal Component Analysis revealing the main directions of variance in the data.</p>
+                    <a href="https://projector.tensorflow.org/" class="btn btn-primary" target="_blank">Launch Projector</a>
+                </div>
+                
+                <div class="embedding-card">
+                    <h3>🔮 t-SNE Embedding</h3>
+                    <p>Non-linear dimensionality reduction showing local cluster neighborhoods.</p>
+                    <a href="https://projector.tensorflow.org/" class="btn btn-primary" target="_blank">Launch Projector</a>
+                </div>
+                
+                <div class="embedding-card">
+                    <h3>📈 SVD Embedding</h3>
+                    <p>Singular Value Decomposition for efficient dimensionality reduction.</p>
+                    <a href="https://projector.tensorflow.org/" class="btn btn-primary" target="_blank">Launch Projector</a>
+                </div>
+                
+                
+            </div>
+            
+            <h2>📝 Usage Instructions</h2>
+            <ol>
+                <li>Click any "Launch Projector" button above to open TensorFlow Projector</li>
+                <li>Click the "Load" button in the top-left corner</li>
+                <li>Upload the corresponding <code>vectors_[embedding_type].tsv</code> and <code>metadata.tsv</code> files</li>
+                <li>Optionally upload <code>sprite.png</code> for visual cluster representations</li>
+                <li>Use the left panel to color points by different metadata properties</li>
+                <li>Try different visualization algorithms (PCA, t-SNE, UMAP) in the projector</li>
+            </ol>
+            
+            <h2>🎨 Visualization Tips</h2>
+            <ul>
+                <li><strong>Color by BE_category:</strong> See stability regions</li>
+                <li><strong>Color by size_category:</strong> Explore size-dependent patterns</li>
+                <li><strong>Color by structural_category:</strong> Understand shape effects</li>
+                <li><strong>Use 3D mode:</strong> Better separation of clusters</li>
+                <li><strong>Adjust perplexity:</strong> For t-SNE, try values between 10-50</li>
+                <li><strong>Search clusters:</strong> Type cluster names to highlight specific points</li>
+            </ul>
+            
+            <div class="stats">
+                <p><strong>Created:</strong> 2025-07-09T17:38:54.794465</p>
+                <p><strong>Features:</strong> n_atoms, BE_per_atom, E_cluster, radius_of_gyration, sphericity, aspect_ratio, density</p>
+            </div>
+        </div>
+    </body>
+    </html>
+    

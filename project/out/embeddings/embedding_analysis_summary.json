@@ -1,0 +1,207 @@
+{
+  "dataset_info": {
+    "total_clusters": 5232,
+    "feature_statistics": {
+      "n_atoms": {
+        "mean": 239.96559633027522,
+        "std": 2.4885056862419894,
+        "min": 60.0,
+        "max": 240.0,
+        "median": 240.0
+      },
+      "E_cluster": {
+        "mean": -9.045149765640447,
+        "std": 0.8200345848318965,
+        "min": -15.71426859664114,
+        "max": -2.156822359958879,
+        "median": -8.8196478745412
+      },
+      "BE_per_atom": {
+        "mean": -7.332306723017879,
+        "std": 0.003393769381261186,
+        "min": -7.339965925996593,
+        "max": -7.304523880847328,
+        "median": -7.333251467189411
+      },
+      "radius_of_gyration": {
+        "mean": 23.239008085262522,
+        "std": 0.5216394825843427,
+        "min": 11.931009947148329,
+        "max": 25.201018930462666,
+        "median": 23.244513141368806
+      },
+      "sphericity": {
+        "mean": 0.49807109344341743,
+        "std": 0.11434111635284995,
+        "min": 0.3000211307729187,
+        "max": 0.6998692820968369,
+        "median": 0.4959543688422143
+      },
+      "aspect_ratio": {
+        "mean": 2.0007402069253346,
+        "std": 0.5816430866991154,
+        "min": 1.0003154891561135,
+        "max": 2.9998496536663533,
+        "median": 2.001191522871924
+      },
+      "density": {
+        "mean": 0.0045773672728777,
+        "std": 0.00029984486930436635,
+        "min": 0.0035798788593780335,
+        "max": 0.008433949916779006,
+        "median": 0.004562062908187262
+      },
+      "volume": {
+        "mean": 52648.71012544862,
+        "std": 3439.4919409963886,
+        "min": 7114.104374823521,
+        "max": 67041.37470218685,
+        "median": 52607.77961205656
+      }
+    },
+    "correlations": {
+      "n_atoms": {
+        "n_atoms": 1.0,
+        "E_cluster": -0.11615308785544187,
+        "BE_per_atom": 0.007114922404622962,
+        "radius_of_gyration": 0.29975360887605923,
+        "sphericity": -0.010035153223628667,
+        "aspect_ratio": -0.0044171577819386906,
+        "density": -0.1778505317908571,
+        "volume": 0.1830612536243248
+      },
+      "E_cluster": {
+        "n_atoms": -0.11615308785544187,
+        "E_cluster": 1.0,
+        "BE_per_atom": -0.9940326027448858,
+        "radius_of_gyration": -0.05363313779934995,
+        "sphericity": 0.004969512402788432,
+        "aspect_ratio": 0.0014994025844649453,
+        "density": 0.04045851270427876,
+        "volume": -0.040448684663150464
+      },
+      "BE_per_atom": {
+        "n_atoms": 0.007114922404622962,
+        "E_cluster": -0.9940326027448858,
+        "BE_per_atom": 1.0,
+        "radius_of_gyration": 0.021076300908845092,
+        "sphericity": -0.0039011235913635227,
+        "aspect_ratio": -0.0010244603553301924,
+        "density": -0.021200449782437715,
+        "volume": 0.020618278287988262
+      },
+      "radius_of_gyration": {
+        "n_atoms": 0.29975360887605923,
+        "E_cluster": -0.05363313779934995,
+        "BE_per_atom": 0.021076300908845092,
+        "radius_of_gyration": 1.0,
+        "sphericity": -0.005672639954503164,
+        "aspect_ratio": -0.005487751892564453,
+        "density": -0.9903525459099082,
+        "volume": 0.9923270735375501
+      },
+      "sphericity": {
+        "n_atoms": -0.010035153223628667,
+        "E_cluster": 0.004969512402788432,
+        "BE_per_atom": -0.0039011235913635227,
+        "radius_of_gyration": -0.005672639954503164,
+        "sphericity": 1.0,
+        "aspect_ratio": 0.00848414993960485,
+        "density": 0.004136206988044388,
+        "volume": -0.004756789949472351
+      },
+      "aspect_ratio": {
+        "n_atoms": -0.0044171577819386906,
+        "E_cluster": 0.0014994025844649453,
+        "BE_per_atom": -0.0010244603553301924,
+        "radius_of_gyration": -0.005487751892564453,
+        "sphericity": 0.00848414993960485,
+        "aspect_ratio": 1.0,
+        "density": 0.004718581043771533,
+        "volume": -0.005261953500890304
+      },
+      "density": {
+        "n_atoms": -0.1778505317908571,
+        "E_cluster": 0.04045851270427876,
+        "BE_per_atom": -0.021200449782437715,
+        "radius_of_gyration": -0.9903525459099082,
+        "sphericity": 0.004136206988044388,
+        "aspect_ratio": 0.004718581043771533,
+        "density": 1.0,
+        "volume": -0.9958971307988507
+      },
+      "volume": {
+        "n_atoms": 0.1830612536243248,
+        "E_cluster": -0.040448684663150464,
+        "BE_per_atom": 0.020618278287988262,
+        "radius_of_gyration": 0.9923270735375501,
+        "sphericity": -0.004756789949472351,
+        "aspect_ratio": -0.005261953500890304,
+        "density": -0.9958971307988507,
+        "volume": 1.0
+      }
+    }
+  },
+  "embeddings_info": {
+    "raw_features": {
+      "dimensions": 7,
+      "variance_explained": null,
+      "feature_names": [
+        "n_atoms",
+        "BE_per_atom",
+        "E_cluster",
+        "radius_of_gyration",
+        "sphericity",
+        "aspect_ratio",
+        "density"
+      ]
+    },
+    "pca": {
+      "dimensions": 7,
+      "variance_explained": null,
+      "feature_names": [
+        "PC1",
+        "PC2",
+        "PC3",
+        "PC4",
+        "PC5",
+        "PC6",
+        "PC7"
+      ]
+    },
+    "tsne": {
+      "dimensions": 3,
+      "variance_explained": null,
+      "feature_names": [
+        "tSNE1",
+        "tSNE2",
+        "tSNE3"
+      ]
+    },
+    "svd": {
+      "dimensions": 7,
+      "variance_explained": null,
+      "feature_names": [
+        "SVD1",
+        "SVD2",
+        "SVD3",
+        "SVD4",
+        "SVD5",
+        "SVD6",
+        "SVD7"
+      ]
+    },
+    "umap": {
+      "dimensions": 3,
+      "variance_explained": null,
+      "feature_names": [
+        "UMAP1",
+        "UMAP2",
+        "UMAP3"
+      ]
+    }
+  },
+  "recommendations": [
+    "Large dataset: UMAP recommended for preserving global structure"
+  ]
+}

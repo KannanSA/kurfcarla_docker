@@ -1,0 +1,104 @@
+{
+  "embeddings": [
+    {
+      "tensorName": "Carbon Clusters (RAW_FEATURES)",
+      "tensorShape": [
+        5232,
+        7
+      ],
+      "tensorPath": "vectors_raw_features.tsv",
+      "metadataPath": "metadata.tsv",
+      "spriteImagePath": "sprite.png",
+      "singleImageDim": [
+        32,
+        32
+      ]
+    },
+    {
+      "tensorName": "Carbon Clusters (PCA)",
+      "tensorShape": [
+        5232,
+        7
+      ],
+      "tensorPath": "vectors_pca.tsv",
+      "metadataPath": "metadata.tsv",
+      "spriteImagePath": "sprite.png",
+      "singleImageDim": [
+        32,
+        32
+      ]
+    },
+    {
+      "tensorName": "Carbon Clusters (TSNE)",
+      "tensorShape": [
+        5232,
+        3
+      ],
+      "tensorPath": "vectors_tsne.tsv",
+      "metadataPath": "metadata.tsv",
+      "spriteImagePath": "sprite.png",
+      "singleImageDim": [
+        32,
+        32
+      ]
+    },
+    {
+      "tensorName": "Carbon Clusters (SVD)",
+      "tensorShape": [
+        5232,
+        7
+      ],
+      "tensorPath": "vectors_svd.tsv",
+      "metadataPath": "metadata.tsv",
+      "spriteImagePath": "sprite.png",
+      "singleImageDim": [
+        32,
+        32
+      ]
+    },
+    {
+      "tensorName": "Carbon Clusters (UMAP)",
+      "tensorShape": [
+        5232,
+        3
+      ],
+      "tensorPath": "vectors_umap.tsv",
+      "metadataPath": "metadata.tsv",
+      "spriteImagePath": "sprite.png",
+      "singleImageDim": [
+        32,
+        32
+      ]
+    }
+  ],
+  "modelCheckpointPath": ".",
+  "metadataPath": "metadata.tsv",
+  "description": "Advanced Carbon Cluster Analysis with Multiple Embedding Types",
+  "analysis_info": {
+    "total_clusters": 5232,
+    "features_used": [
+      "n_atoms",
+      "BE_per_atom",
+      "E_cluster",
+      "radius_of_gyration",
+      "sphericity",
+      "aspect_ratio",
+      "density"
+    ],
+    "embedding_methods": [
+      "raw_features",
+      "pca",
+      "tsne",
+      "svd",
+      "umap"
+    ],
+    "creation_date": "2025-07-09T17:38:54.794465",
+    "statistics": {
+      "mean_atoms": 239.96559633027522,
+      "mean_be": -7.332306723017879,
+      "std_be": 0.003393769381261186,
+      "min_be": -7.339965925996593,
+      "max_be": -7.304523880847328
+    }
+  }
+}

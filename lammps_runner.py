@@ -7,8 +7,22 @@ from ase.calculators.lammpsrun import LAMMPS
 import glob
 import subprocess
 
-# The absolute path to the main potential file inside the container.
-POTENTIAL_XML_PATH = '/app/project/results/Carbon_GAP_20.xml'
+def detect_potential_path():
+    """Detect the correct path for the potential file"""
+    possible_paths = [
+        '/app/project/results/Carbon_GAP_20.xml',  # Docker path
+        'project/results/Carbon_GAP_20.xml',       # Local relative path
+        os.path.join(os.getcwd(), 'project/results/Carbon_GAP_20.xml'),  # Local absolute path
+    ]
+    
+    for path in possible_paths:
+        if os.path.exists(path):
+            return path
+    
+    return None
+
+# Try to detect the correct potential path
+POTENTIAL_XML_PATH = detect_potential_path()
 
 # Reference energy per atom (eV) for graphite.
 E_REF = -7.37
@@ -23,8 +37,8 @@ def run_binding_energy(xyz_file, out_dir, lammps_executable):
     os.makedirs(out_dir, exist_ok=True)
 
     # Check that the main potential file exists at its absolute path.
-    if not os.path.exists(POTENTIAL_XML_PATH):
-        raise FileNotFoundError(f"Potential file not found at the absolute path: {POTENTIAL_XML_PATH}")
+    if not POTENTIAL_XML_PATH or not os.path.exists(POTENTIAL_XML_PATH):
+        raise FileNotFoundError(f"Potential file not found. Checked paths: {['/app/project/results/Carbon_GAP_20.xml', 'project/results/Carbon_GAP_20.xml']}")
     
     # Configure LAMMPS parameters with the working hybrid potential format
     params = {
@@ -134,15 +148,34 @@ def batch_run(cluster_dir, out_dir, results_csv, lammps_executable):
         print(f"No .xyz files found in directory: {cluster_dir}", file=sys.stderr)
         return pd.DataFrame()
 
-    for xyz_path in xyz_files:
-        print(f"Running on {os.path.basename(xyz_path)}...")
-        res = run_binding_energy(xyz_path, out_dir, lammps_executable)
-        results.append(res)
+    failed_files = []
+    for i, xyz_path in enumerate(xyz_files):
+        print(f"\n[{i+1}/{len(xyz_files)}] Running on {os.path.basename(xyz_path)}...")
+        try:
+            res = run_binding_energy(xyz_path, out_dir, lammps_executable)
+            results.append(res)
+            print(f"✅ Successfully processed {os.path.basename(xyz_path)}")
+        except Exception as e:
+            print(f"❌ Failed to process {os.path.basename(xyz_path)}: {e}")
+            failed_files.append(xyz_path)
+            continue
 
     df = pd.DataFrame(results)
     os.makedirs(os.path.dirname(results_csv), exist_ok=True)
     df.to_csv(results_csv, index=False)
     print(f"\nResults saved to {results_csv}")
+    
+    # Report summary
+    print(f"\n📊 Batch Processing Summary:")
+    print(f"   Total files processed: {len(xyz_files)}")
+    print(f"   Successful: {len(results)}")
+    print(f"   Failed: {len(failed_files)}")
+    
+    if failed_files:
+        print(f"\n❌ Failed files:")
+        for f in failed_files:
+            print(f"   - {os.path.basename(f)}")
+    
     return df
 
 if __name__ == '__main__':
