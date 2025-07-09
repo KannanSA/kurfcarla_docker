@@ -25,3 +25,5 @@ USER appuser
 
 # Set the default command to run your python script.
 CMD ["python", "lammps_runner.py"]
+
+COPY project/results/ /app/project/results/

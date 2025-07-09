@@ -5,6 +5,7 @@ from ase import Atoms
 from ase.io import read
 from ase.calculators.lammpsrun import LAMMPS
 import glob
+import subprocess
 
 # The absolute path to the main potential file inside the container.
 POTENTIAL_XML_PATH = '/app/project/results/Carbon_GAP_20.xml'
@@ -14,7 +15,7 @@ E_REF = -7.37
 
 def run_binding_energy(xyz_file, out_dir, lammps_executable):
     """
-    Runs a single-point energy calculation using an absolute path for the potential.
+    Runs a single-point energy calculation using the hybrid Glue+GAP potential.
     """
     atoms = read(xyz_file)
     n_atoms = len(atoms)
@@ -24,47 +25,102 @@ def run_binding_energy(xyz_file, out_dir, lammps_executable):
     # Check that the main potential file exists at its absolute path.
     if not os.path.exists(POTENTIAL_XML_PATH):
         raise FileNotFoundError(f"Potential file not found at the absolute path: {POTENTIAL_XML_PATH}")
-
+    
+    # Configure LAMMPS parameters with the working hybrid potential format
     params = {
         'pair_style': 'quip',
-        # Provide the absolute path to the potential file. LAMMPS will find the
-        # companion .sparseX files in the same directory.
-        # Corrected pair_coeff to use the full init_args string from the XML,
-        # escaping curly braces for f-string formatting.
-        'pair_coeff': [f'* * {POTENTIAL_XML_PATH} "Sum init_args_pot1={{IP Glue}} init_args_pot2={{IP GAP label=GAP_2020_4_27_60_2_50_5_436}}" 1'], #
+        'pair_coeff': [f'* * {POTENTIAL_XML_PATH} "IP Glue" 6'],  # Working format for hybrid Glue+GAP
         'mass': ['1 12.011']
     }
 
+    print(f"Running calculation for {base} with {n_atoms} atoms")
+    print(f"Using hybrid Glue+GAP potential: {POTENTIAL_XML_PATH}")
+    
+    # Configure LAMMPS executable
+    actual_lammps_executable = lammps_executable
     try:
-        print(f"--- Using LAMMPS command: {lammps_executable} ---")
+        # Check if the LAMMPS executable exists
+        try:
+            subprocess.run(['which', actual_lammps_executable], check=True, capture_output=True)
+        except subprocess.CalledProcessError:
+            print(f"LAMMPS executable '{actual_lammps_executable}' not found. Trying common alternatives...")
+            # Try common LAMMPS executable names, preferring non-MPI versions
+            for alt_cmd in ['lmp_serial', 'lammps', 'lmp', 'lmp_mpi']:
+                try:
+                    subprocess.run(['which', alt_cmd], check=True, capture_output=True)
+                    actual_lammps_executable = alt_cmd
+                    print(f"Found LAMMPS executable: {actual_lammps_executable}")
+                    break
+                except subprocess.CalledProcessError:
+                    continue
+            else:
+                raise RuntimeError("No LAMMPS executable found!")
         
-        # We no longer need the 'files' argument since we are using an absolute path.
+        # Handle MPI versions with proper configuration
+        if 'mpi' in actual_lammps_executable.lower():
+            print(f"Using MPI version {actual_lammps_executable} with container configuration...")
+            # Set environment variables to help with MPI in containers
+            os.environ['OMPI_ALLOW_RUN_AS_ROOT'] = '1'
+            os.environ['OMPI_ALLOW_RUN_AS_ROOT_CONFIRM'] = '1'
+            os.environ['OMPI_MCA_btl_vader_single_copy_mechanism'] = 'none'
+        
         calc = LAMMPS(
             **params,
-            command=lammps_executable
+            command=actual_lammps_executable,
+            keep_tmp_files=True,  # Keep temporary files for debugging
+            no_data_file=False,   # Ensure data file is written
+            always_triclinic=False  # Use simple orthorhombic box
         )
         
         atoms.calc = calc
         E_cluster = atoms.get_potential_energy()
         BE_per_atom = (n_atoms * E_REF - E_cluster) / n_atoms
         
-    except RuntimeError as e:
-        print("An unexpected LAMMPS error occurred.", file=sys.stderr)
-        print("Original error message:\n", e, file=sys.stderr)
-        sys.exit(1)
+        print(f"Calculation completed successfully!")
+        print(f"Cluster energy: {E_cluster:.6f} eV")
+        print(f"Binding energy per atom: {BE_per_atom:.6f} eV")
+        
+        # Write log file
+        log_file = os.path.join(out_dir, base + '.log')
+        with open(log_file, 'w') as f:
+            f.write(f"TotalEnergy {E_cluster}\\n")
+            f.write(f"BE_per_atom {BE_per_atom}\\n")
 
-    # Write log.
-    log_file = os.path.join(out_dir, base + '.log')
-    with open(log_file, 'w') as f:
-        f.write(f"TotalEnergy {E_cluster}\n")
-        f.write(f"BE_per_atom {BE_per_atom}\n")
+        return {
+            'cluster': base,
+            'n_atoms': n_atoms,
+            'E_cluster': E_cluster,
+            'BE_per_atom': BE_per_atom
+        }
+        
+    except Exception as e:
+        print(f"LAMMPS calculation failed: {str(e)}")
+        
+        # Look for LAMMPS temporary files for debugging
+        tmp_dirs = [d for d in os.listdir('/tmp') if d.startswith('LAMMPS-')]
+        if tmp_dirs:
+            print("\\nDEBUG: Looking for LAMMPS files in /tmp...")
+            for tmp_dir in tmp_dirs[-2:]:  # Show last 2 directories
+                full_tmp_path = f'/tmp/{tmp_dir}'
+                print(f"Found LAMMPS directory: {full_tmp_path}")
+                if os.path.exists(full_tmp_path):
+                    files = os.listdir(full_tmp_path)
+                    print(f"Files: {files}")
+                    
+                    # Look for log files and print their contents
+                    log_files = [f for f in files if f.startswith('log_')]
+                    for log_file in log_files:
+                        log_path = os.path.join(full_tmp_path, log_file)
+                        try:
+                            with open(log_path, 'r') as f:
+                                log_content = f.read()
+                            print(f"\\nContents of {log_file}:")
+                            print(log_content[-500:])  # Show last 500 characters
+                        except Exception as log_error:
+                            print(f"Could not read {log_path}: {log_error}")
+        
+        raise
 
-    return {
-        'cluster': base,
-        'n_atoms': n_atoms,
-        'E_cluster': E_cluster,
-        'BE_per_atom': BE_per_atom
-    }
 
 def batch_run(cluster_dir, out_dir, results_csv, lammps_executable):
     """
@@ -98,7 +154,7 @@ if __name__ == '__main__':
     parser.add_argument('--out', type=str, default='project/out', help='Output directory for data and logs')
     parser.add_argument('--results', type=str, default='project/out/results.csv', help='CSV path to save aggregated results')
     
-    parser.add_argument('--lammps', type=str, default='lmp_mpi', help='LAMMPS command')
+    parser.add_argument('--lammps', type=str, default='lmp', help='LAMMPS command')
     
     args = parser.parse_args()
 
