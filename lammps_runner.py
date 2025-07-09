@@ -29,7 +29,9 @@ def run_binding_energy(xyz_file, out_dir, lammps_executable):
         'pair_style': 'quip',
         # Provide the absolute path to the potential file. LAMMPS will find the
         # companion .sparseX files in the same directory.
-        'pair_coeff': [f'* * {POTENTIAL_XML_PATH} "IP GAP" 1'],
+        # Corrected pair_coeff to use the full init_args string from the XML,
+        # escaping curly braces for f-string formatting.
+        'pair_coeff': [f'* * {POTENTIAL_XML_PATH} "Sum init_args_pot1={{IP Glue}} init_args_pot2={{IP GAP label=GAP_2020_4_27_60_2_50_5_436}}" 1'], #
         'mass': ['1 12.011']
     }
 
